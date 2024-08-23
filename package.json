@@ -1,0 +1,20 @@
+{
+  "name": "richpanel-blogposts",
+  "version": "1.0.0",
+  "description": "REST API for a simple blog post system",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "John K Antony",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "express-openapi-validator": "^5.3.1",
+    "http": "^0.0.1-security",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7"
+  }
+}
