@@ -1,4 +1,4 @@
-.DS_Store
+**/.DS_Store
 temp/
 node_modules/
 openapitools.json
