@@ -32,8 +32,16 @@ paths:
                 $ref: '#/components/schemas/Blogpost'
         '401':
           description: Unauthenticated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
         '404':
           description: Blog post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
       security:
         - APIKey: []
       servers:
@@ -70,10 +78,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Blogpost'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
         '401':
           description: Unauthenticated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
         '404':
           description: Blog post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '422':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
       security:
         - APIKey: []
       servers:
@@ -101,8 +129,16 @@ paths:
                 $ref: '#/components/schemas/Blogpost'
         '401':
           description: Unauthenticated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
         '404':
           description: Blog post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
       security:
         - APIKey: []
       servers:
@@ -150,6 +186,10 @@ paths:
               description: Number of returned items
         '401':
           description: Unauthenticated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
       security:
         - APIKey: []
       servers:
@@ -161,19 +201,6 @@ paths:
       summary: Create a new blog post
       description: Create a new blog post.
       operationId: createBlogpost
-      requestBody:
-        description: Post the necessary fields for the API to create a new blog post.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                contents:
-                  type: string
-              required:
-                - title
       responses:
         '201':
           description: Blog post created
@@ -182,9 +209,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/Blogpost'
         '400':
-          description: Missing Required Information
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
         '401':
           description: Unauthenticated Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '422':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+                requestBody: null
       security:
         - APIKey: []
       servers:
@@ -216,11 +258,30 @@ components:
         userId:
           type: string
           description: Id of the user that created the blog post
-        createAt:
+        createdAt:
           type: string
+          nullable: true
           description: The date that blog post was created.
-          format: date
+          format: date-time
+        modifiedAt:
+          type: string
+          nullable: true
+          description: The date that blog post was modified.
+          format: date-time
       required:
         - id
         - title
         - userId
+    ResponseError:
+      type: object
+      title: Response Error
+      description: Response error object
+      properties:
+        message:
+          type: string
+          nullable: true
+          description: Error message.
+        errors:
+          type: object
+          nullable: true
+          description: Nested errors if any.

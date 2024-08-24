@@ -8,10 +8,10 @@ class CallContext {
             }
             this.request = request;
             this.userId = request.userId;
-            this.createdAt = commonUtils.getCreateTS();
+            this.createdAt = commonUtils.getCurrentTS();
         } catch (error) {
-        console.log('Error creating CallContext: ', error);
-        throw error;
+            console.log('Error creating CallContext: ', error);
+            throw error;
         }
     }
 

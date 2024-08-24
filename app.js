@@ -6,6 +6,7 @@ const http = require('http');
 var compression = require('compression')
 const OpenApiValidator = require('express-openapi-validator');
 const ApiKeyAuthHandler = require('./auth/apikeyAuthHandler');
+const ErrorHandler = require('./handlers/errorResponseHandler');
 
 require('dotenv').config({ path: process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'});
 
@@ -48,16 +49,10 @@ app.use(
   })
 );
 
-// With auto-wired operation handlers, you don't have to declare your routes!
-// See apiSpec for x-eov-* vendor extensions
-
 // Create a custom error handler
 app.use((err, req, res, next) => {
   // format errors
-  res.status(err.status || 500).json({
-    message: err.message,
-    errors: err.errors,
-  });
+  return ErrorHandler.getResponseError(err, res);
 });
 
 http.createServer(app).listen(port);

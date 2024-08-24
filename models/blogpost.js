@@ -7,7 +7,8 @@ class Blogpost {
         this.title = title;
         this.contents = contents;
         this.userId = userId;
-        this.createdAt = commonUtils.getCreateTS();
+        this.createdAt = commonUtils.getCurrentTS();
+        this.modifiedAt = null;
     }
 }
 

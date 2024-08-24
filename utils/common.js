@@ -1,7 +1,7 @@
-const getCreateTS = function() {
+const getCurrentTS = function() {
     return new Date().toISOString();
 }
 
 module.exports = {
-    getCreateTS,
+    getCurrentTS,
 }
