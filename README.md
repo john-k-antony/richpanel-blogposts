@@ -120,16 +120,17 @@ Make sure that an API key is provided for API_KEY env variable and this key shou
 
 * Provided autocannon load script is slightly modified to test the API server effectively. The modified script is located in test/autocannon/loadtest.js.
 * All the API endpoints are tested with the modified script. However, for properly testing the DELETE endpoint, a more complex script is required to send the dynamic post id values for each run. It is possible to modify the script to achieve this. However, because of lack of time, it has been omitted. Because of this, except for the first DELETE call, all the subsequent calls with return an HTTP 404 error because the same post id is repeatedy sent to the DELETE endpoint. This is because the first request deletes the post with the given id.
+* A set of Postman collections are included in the test/postman folder. Please check the README file in that folder for further details.
 
 ## Out of scope / further improvements TODO
 
-* GET /posts listing API filtering using graphQL and sorting implementation
-* Integrate with external Redis server for caching GET /posts listing API response
-* Integration with external OIDC/OAuth2.0 IdP (Identity Provider) for user registration and authentication
-* HELM chart for deploying in a Kubernetes cluster
-* Adding Prometheus /metric endpoint for capturing real time operation stats, /liveness and /rediness endpoint probes for Kubernetes deployment, integration and instrumentation with Zipkin / similar tracing tools for observability
-* Adding unit test cases and code coverage metrics for the entire application code
-* Integrating with static code analysis tools like SonarQube for code quality
-* Adding pre-commit and pre-push GIT hooks to forcefull run linting and unit testing + code coverage
-* Adding GitHub actions to setup CI to build the Docker image on every publish action from GitHub
-* Adding more pagination related response HTTP header like current page number, next page number etc for GET /posts listing API
+* GET /posts listing API filtering using graphQL and sorting implementation.
+* Integrate with external Redis server for caching GET /posts listing API response.
+* Integration with external OIDC/OAuth2.0 IdP (Identity Provider) for user registration and authentication.
+* HELM chart for deploying in a Kubernetes cluster.
+* Adding Prometheus /metric endpoint for capturing real time operation stats, /liveness and /rediness endpoint probes for Kubernetes deployment, integration and instrumentation with Zipkin / similar tracing tools for observability.
+* Adding unit test cases and code coverage metrics for the entire application code.
+* Integrating with static code analysis tools like SonarQube for code quality.
+* Adding pre-commit and pre-push GIT hooks to forcefull run linting and unit testing + code coverage.
+* Adding GitHub actions to setup CI to build the Docker image on every publish action from GitHub.
+* Adding more pagination related response HTTP header like current page number, next page number etc for GET /posts listing API.

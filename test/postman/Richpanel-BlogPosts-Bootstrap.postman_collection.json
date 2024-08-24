@@ -1,0 +1,85 @@
+{
+	"info": {
+		"_postman_id": "0f1ce3c0-60a2-4573-b5c2-98838155a4d3",
+		"name": "Richpanel-BlogPosts-Bootstrap",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5882368"
+	},
+	"item": [
+		{
+			"name": "CreatePosts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"numberOfRuns\", 100)",
+							"if (!pm.environment.get(\"counter\")) {",
+							"    pm.environment.set(\"counter\", 1);",
+							"} else {",
+							"    let counter = parseInt(pm.environment.get(\"counter\"));",
+							"    counter++;",
+							"    pm.environment.set(\"counter\", counter);",
+							"}",
+							"let counter = parseInt(pm.environment.get(\"counter\"));",
+							"pm.environment.set(\"title\", `Title of ${counter}`);",
+							"pm.environment.set(\"contents\", `Contents for ${counter}`);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let numberOfRuns = parseInt(pm.environment.get(\"numberOfRuns\"));",
+							"let counter = parseInt(pm.environment.get(\"counter\"));",
+							"",
+							"console.log(numberOfRuns)",
+							"console.log(counter)",
+							"",
+							"if (counter < numberOfRuns) {",
+							"    postman.setNextRequest(\"CreatePosts\");",
+							"} else {",
+							"    pm.environment.unset(\"counter\")",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{blogpost_api_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\":\"{{title}}\",\n    \"contents\": \"{{contents}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/posts",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
