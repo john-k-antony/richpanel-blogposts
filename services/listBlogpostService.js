@@ -1,4 +1,3 @@
-const BlogPostModel = require('../models/blogpost');
 const DataStore = require('../store/datastore');
 
 const listBlogposts = function(offset, limit) {

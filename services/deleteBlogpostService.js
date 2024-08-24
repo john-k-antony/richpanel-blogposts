@@ -1,4 +1,3 @@
-const BlogPost = require('../models/blogpost');
 const DataStore = require('../store/datastore');
 
 const deleteBlogpostById = async (id) => {
