@@ -1,9 +1,9 @@
 const BlogPost = require('../models/blogpost');
+const DataStore = require('../store/datastore');
 
 const getBlogpostById = async (id) => {
     return new Promise((resolve, reject) => {
-        let blogPost = new BlogPost(title=`Title for ${id}`, contents=`Content for ${id}`, userId=`User for ${id}`);
-        console.log(blogPost)
+        let blogPost = DataStore.get(id);
         resolve(blogPost);
     });
 };
