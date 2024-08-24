@@ -1,6 +1,6 @@
 const DataStore = require('../store/datastore');
 
-const getBlogpostById = async (id) => {
+const getBlogpostById = async (callContext, id) => {
     return new Promise((resolve, reject) => {
         let blogPost = DataStore.get(id);
         resolve(blogPost);

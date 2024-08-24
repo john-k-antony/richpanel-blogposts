@@ -61,7 +61,7 @@ paths:
               properties:
                 title:
                   type: string
-                content:
+                contents:
                   type: string
       responses:
         '200':
@@ -170,7 +170,7 @@ paths:
               properties:
                 title:
                   type: string
-                content:
+                contents:
                   type: string
               required:
                 - title

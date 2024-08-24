@@ -4,8 +4,11 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const http = require('http');
 const OpenApiValidator = require('express-openapi-validator');
+const ApiKeyAuthHandler = require('./auth/apikeyAuthHandler');
 
-const port = 3000;
+require('dotenv').config({ path: process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'});
+
+const port = process.env.PORT;
 const app = express();
 const apiSpec = path.join(__dirname, 'api', 'BlogPost.yaml');
 
@@ -23,6 +26,13 @@ app.use(
   OpenApiValidator.middleware({
     apiSpec,
     validateResponses: true, // default false
+    validateSecurity: {
+        handlers: {
+            APIKey: function(req, scopes, schema) {
+                return ApiKeyAuthHandler.authenticate(req, scopes, schema);
+            },
+        }
+    },    
     // Provide the base path to the operation handlers directory
     operationHandlers: path.join(__dirname), // default false
   })

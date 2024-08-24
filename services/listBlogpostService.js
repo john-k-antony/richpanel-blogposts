@@ -1,6 +1,6 @@
 const DataStore = require('../store/datastore');
 
-const listBlogposts = function(offset, limit) {
+const listBlogposts = function(callContext, offset, limit) {
     return new Promise((resolve, reject) => {
         let blogPosts = DataStore.list(offset, limit);
         let totalSize = DataStore.size();

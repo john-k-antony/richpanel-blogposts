@@ -1,21 +1,13 @@
 const idGenerator = require('../utils/idGenerator');
+const commonUtils = require('../utils/common');
 
 class Blogpost {
-    #currentId = 0;
     constructor(title = "", contents="", userId="") {
-        this.id = this.#generateID().toString();
+        this.id = idGenerator.next().toString();
         this.title = title;
         this.contents = contents;
         this.userId = userId;
-        this.createdAt = this.#getCreateTS();
-    }
-
-    #generateID() {
-        return idGenerator.next();
-    }
-
-    #getCreateTS() {
-        return new Date().toISOString();
+        this.createdAt = commonUtils.getCreateTS();
     }
 }
 
