@@ -76,6 +76,17 @@ $ npm run lint
 
 Explore `eslint.config.mjs` for ESLint configuration options.
 
+## Environment Variables Definition
+
+- PORT  
+  HTTP port on which Blog post API server listen to.  
+  *Default: 3000*
+- LIST_MAX_RECORDS_SIZE
+  Maximum number of records (max limit) for the GET /posts listing response. This limiting is enforced a performance improvement  
+  *Default: 500*
+- API_KEY
+  API Key used to authenticate API requests. All the REST API calls should include this API Key value in the HTTP Authorization header as a *bearer* key to authenticate access.
+
 ## Development and deployment With Docker
 
 * Install [Docker](https://docs.docker.com/installation/#installation)
@@ -84,6 +95,41 @@ Explore `eslint.config.mjs` for ESLint configuration options.
 ```bash
 $ docker build -t richpanel/blogpost .
 $ docker run -it --name blogpost-api -p 3000:8080 -e PORT='8080' -e API_KEY='<api_key>' richpanel/blogpost
-$
 ```
 Make sure that an API key is provided for API_KEY env variable and this key should be provided as the **Authorization** bearer HTTP request header when making REST API calls to this server.
+
+## Design Decisions
+
+* API first desing approach is followed. OpenAPI 3.0 api spec is created before the development and used the API spec as the basis for API implementation. express-openapi-validator library is used to auto generate the routes from the API spec.
+* A very simple blogPost data model is used in the implementation to keep the implementation simple and quick. In a real scenarion, a blogPost object will be more complex with more data attributes and relation ships.
+* User management is NOT implemented. Only a very basic API Key based authentication is provided based on the requirements.
+* Response compression is enaled in Express layer to compress the large response results, improving the network latency.
+* A hard limit is enforced for the maximum number of records that are returned from the GET /posts listing API. This hard limit is configured via ENV variable - *LIST_MAX_RECORDS_SIZE*
+* Basic pagination support is provided for GET /posts listing API with **offset** and **limit** URL paramters. The list response will contain following response HTTP headers
+    - Pagination-Count  
+      Total number of posts
+    - Pagination-Limit  
+      Current response length
+* The API server is designed and implemented as a state-less micro service and is expected to deploy as a multi instance cluster in a Kubernetes environment for better through put and low latency response times. This service can be easily setup as an elastic deployment with in Kubernetes and will react to HPA (Horizontal Pod Autoscaling) for handling unpredictable traffic.
+
+## Assumptions
+
+* Since this implementation is using an in-memory datastore, adding a caching layer for the GET /posts listing API might not add any significant performance improvement. So additional in-memory caching layer is omitted in this implementation. However, an external caching service like Redis is must have when this application is eventually setup with a SQL/NoSQL data store.
+
+## Performance Load Test
+
+* Provided autocannon load script is slightly modified to test the API server effectively. The modified script is located in test/autocannon/loadtest.js.
+* All the API endpoints are tested with the modified script. However, for properly testing the DELETE endpoint, a more complex script is required to send the dynamic post id values for each run. It is possible to modify the script to achieve this. However, because of lack of time, it has been omitted. Because of this, except for the first DELETE call, all the subsequent calls with return an HTTP 404 error because the same post id is repeatedy sent to the DELETE endpoint. This is because the first request deletes the post with the given id.
+
+## Out of scope / further improvements TODO
+
+* GET /posts listing API filtering using graphQL and sorting implementation
+* Integrate with external Redis server for caching GET /posts listing API response
+* Integration with external OIDC/OAuth2.0 IdP (Identity Provider) for user registration and authentication
+* HELM chart for deploying in a Kubernetes cluster
+* Adding Prometheus /metric endpoint for capturing real time operation stats, /liveness and /rediness endpoint probes for Kubernetes deployment, integration and instrumentation with Zipkin / similar tracing tools for observability
+* Adding unit test cases and code coverage metrics for the entire application code
+* Integrating with static code analysis tools like SonarQube for code quality
+* Adding pre-commit and pre-push GIT hooks to forcefull run linting and unit testing + code coverage
+* Adding GitHub actions to setup CI to build the Docker image on every publish action from GitHub
+* Adding more pagination related response HTTP header like current page number, next page number etc for GET /posts listing API
