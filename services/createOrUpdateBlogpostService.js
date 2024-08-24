@@ -6,6 +6,9 @@ const commonUtils = require('../utils/common');
 
 const createBlogpost = async (callContext, payload) => {
     return new Promise((resolve, reject) => {
+        if (!payload) {
+            return reject(new ResponseError(Constants.RESPONSE_ERROR_STATUS_INVALID_INPUT, `No data available to create`));
+        }
         let blogPost = new BlogPost(title=payload.title, contents=payload.contents, userId=callContext.getUserId());
         DataStore.put(blogPost);
         resolve(blogPost);
@@ -14,14 +17,24 @@ const createBlogpost = async (callContext, payload) => {
 
 const updateBlogpost = async (callContext, id, payload) => {
     return new Promise((resolve, reject) => {      
+        if (!id) {
+            return reject(new ResponseError(Constants.RESPONSE_ERROR_STATUS_INVALID_INPUT, `No id provided`));
+        }
         let blogPost = DataStore.get(id.toString());
         if(blogPost) {
-            // update payload and save the object back to store
-            let updatedBlogPost = Object.assign({}, blogPost, {
-                title: payload.title, 
-                contents: payload.contents,
-                modifiedAt: commonUtils.getCurrentTS() 
-            })
+            if (!payload) {
+                return reject(new ResponseError(Constants.RESPONSE_ERROR_STATUS_INVALID_INPUT, `No data available to update`));
+            }
+            let sanitizedPayload = {
+                modifiedAt: commonUtils.getCurrentTS(),
+            };
+            if (payload.title && payload.title.trim().length > 0) {
+                sanitizedPayload.title = payload.title;
+            }
+            if (payload.contents && payload.contents.trim().length > 0) {
+                sanitizedPayload.contents = payload.contents;
+            }            
+            let updatedBlogPost = Object.assign({}, blogPost, sanitizedPayload);
             DataStore.put(updatedBlogPost);
             resolve(updatedBlogPost);
         } else {

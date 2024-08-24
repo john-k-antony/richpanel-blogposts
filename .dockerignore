@@ -1,0 +1,14 @@
+node_modules
+test
+Dockerfile
+.dockerignore
+.git
+.gitignore
+.vscode
+.tmp
+.env
+.env.development
+.env.production
+.log
+README.md
+eslint.config.mjs

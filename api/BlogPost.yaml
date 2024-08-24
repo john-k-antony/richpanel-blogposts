@@ -69,8 +69,10 @@ paths:
               properties:
                 title:
                   type: string
+                  nullable: true
                 contents:
                   type: string
+                  nullable: true
       responses:
         '200':
           description: Blog post updated
@@ -201,6 +203,20 @@ paths:
       summary: Create a new blog post
       description: Create a new blog post.
       operationId: createBlogpost
+      requestBody:
+        description: Post the necessary fields for the API to create a new blog post.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                contents:
+                  type: string
+                  nullable: true
+              required:
+                - title
       responses:
         '201':
           description: Blog post created
@@ -226,7 +242,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseError'
-                requestBody: null
       security:
         - APIKey: []
       servers:

@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "NODE_ENV=development node app.js",
     "start:prod": "NODE_ENV=production node app.js",
-    "start:docker": "NODE_ENV=production node --max_old_space_size=6144 server.js",
+    "start:docker": "NODE_ENV=production node --max_old_space_size=6144 app.js",
     "start": "npm run start:dev",
     "lint": "eslint .",
     "lint-fix": "eslint --fix .",
@@ -27,6 +27,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.9.1",
+    "autocannon": "^7.15.0",
     "eslint": "^9.9.1",
     "globals": "^15.9.0",
     "standard": "^17.1.0"
