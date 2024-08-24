@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const http = require('http');
+var compression = require('compression')
 const OpenApiValidator = require('express-openapi-validator');
 const ApiKeyAuthHandler = require('./auth/apikeyAuthHandler');
 
@@ -10,6 +11,15 @@ require('dotenv').config({ path: process.env.NODE_ENV ? `.env.${process.env.NODE
 
 const port = process.env.PORT;
 const app = express();
+app.use(compression({ filter: (req, res) => {
+    if (req.headers['x-no-compression']) {
+        // don't compress responses with this request header
+        return false
+    }    
+    // fallback to standard filter function
+    return compression.filter(req, res)
+    }    
+}));
 const apiSpec = path.join(__dirname, 'api', 'BlogPost.yaml');
 
 // Install bodyParsers for the request types that the API will support
