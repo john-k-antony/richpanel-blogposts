@@ -120,6 +120,7 @@ Make sure that an API key is provided for API_KEY env variable and this key shou
 
 * Provided autocannon load script is slightly modified to test the API server effectively. The modified script is located in test/autocannon/loadtest.js.
 * All the API endpoints are tested with the modified script. However, for properly testing the DELETE endpoint, a more complex script is required to send the dynamic post id values for each run. It is possible to modify the script to achieve this. However, because of lack of time, it has been omitted. Because of this, except for the first DELETE call, all the subsequent calls with return an HTTP 404 error because the same post id is repeatedy sent to the DELETE endpoint. This is because the first request deletes the post with the given id.
+* **Latest load test running results are available in test/autocannon/TestRunResults_24_Aug_2024.txt file.**
 * A set of Postman collections are included in the test/postman folder. Please check the README file in that folder for further details.
 
 ## Out of scope / further improvements TODO
