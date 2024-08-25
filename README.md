@@ -135,4 +135,3 @@ Make sure that an API key is provided for API_KEY env variable and this key shou
 * Adding pre-commit and pre-push GIT hooks to forcefull run linting and unit testing + code coverage.
 * Adding GitHub actions to setup CI to build the Docker image on every publish action from GitHub.
 * Adding more pagination related response HTTP header like current page number, next page number etc for GET /posts listing API.
-# richpanel-blogposts-golang
